@@ -31,14 +31,18 @@ namespace STFUGrimmChild
         {
             Log("Initializing");
 
-            ModHooks.HeroUpdateHook += ModHooks_HeroUpdateHook;
+            On.PlayMakerFSM.OnEnable += PlayMakerFSM_OnEnable;
 
             Log("Initialized");
         }
 
-        private void ModHooks_HeroUpdateHook()
+        private void PlayMakerFSM_OnEnable(On.PlayMakerFSM.orig_OnEnable orig, PlayMakerFSM self)
         {
-            GameObject.Find("Grimmchild(Clone)").transform.Find("Voice Loop").gameObject.SetActive(false);
+            orig(self);
+            if (self.gameObject.tag == "Grimmchild" && self.FsmName == "Control")
+            {
+                GameObject.Find("Grimmchild(Clone)").transform.Find("Voice Loop").gameObject.SetActive(false);
+            }
         }
     }
 }
